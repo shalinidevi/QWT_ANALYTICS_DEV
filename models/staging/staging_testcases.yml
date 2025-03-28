@@ -1,0 +1,34 @@
+version: 2
+ 
+models:
+  - name: stg_customers
+    description: to find the uniue customerid from stg_customers
+    columns:
+      - name: customerid
+        tests:
+          - not_null
+          - unique
+ 
+  - name: stg_order_details
+    columns:
+      - name: orderid
+        description: "{{ doc('orders')}}"
+        tests:
+          - relationships:
+              to: ref('stg_orders')
+              field: orderid
+
+  - name: stg_shipment
+    columns:
+      - name: status
+        description: to fcheck the status of the shipments in stg_shipment
+        tests:
+          - accepted_values:
+              values: ['shipped','replaced','ordered','returned']
+
+  - name: stg_employees
+    description: to check if the employee id ie even in stg_employees
+    columns:
+      - name: empid
+        tests:
+          - is even
